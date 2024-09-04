@@ -5,6 +5,8 @@ import { FastifyInstance } from "fastify";
 
 export async function memoriesRoutes(app: FastifyInstance){
     
+
+    // Listar todas as memorias
     app.get('/memories', async ()=> {
         const memories = await prisma.memory.findMany({
             orderBy: {
@@ -23,7 +25,7 @@ export async function memoriesRoutes(app: FastifyInstance){
         })
     })
 
-
+    // Listar memorio pelo ID
     app.get('/memories/:id', async (request)=> {
         // Validacao de ID
         const paramnsSchema = z.object({id: z.string().uuid()}) 
@@ -35,7 +37,8 @@ export async function memoriesRoutes(app: FastifyInstance){
         })
         return memory
     })
-
+    
+    // Criar nova memoria
     app.post('/memories', async (request)=>{
        //Validacao do corpo da requisicao
         const bodySchema = z.object({
@@ -59,6 +62,7 @@ export async function memoriesRoutes(app: FastifyInstance){
 
     })
 
+    // Alterar memorias por ID
     app.put('/memories/:id', async (request)=>{
         // Validacao do ID
         const paramnsSchema = z.object({ id: z.string().uuid()})
@@ -87,7 +91,9 @@ export async function memoriesRoutes(app: FastifyInstance){
         return memory
     })
 
+    // Deletar memorias pelo ID
     app.delete('/memories/:id', async (request) => {
+        // Validar ID
         const paramnsSchema = z.object({id: z.string().uuid()}) 
         const { id } = paramnsSchema.parse(request.params)
         
